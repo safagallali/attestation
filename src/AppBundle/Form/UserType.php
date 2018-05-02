@@ -31,7 +31,7 @@ class UserType extends AbstractType
             ->add('grade',EntityType::class,[
                 'class' => 'AppBundle:Grade',
                 'choice_label' => 'libelleG',
-                'placeholder' => 'Choisissez un role'
+                'placeholder' => 'Choisissez un grade'
             ])
             ->add('save', SubmitType::class)
 

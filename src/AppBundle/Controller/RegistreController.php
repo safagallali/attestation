@@ -12,11 +12,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegistreController extends Controller
 {
     /**
-     * @Route("/registre", name="register")
+     * @Route("/register", name="register")
      * @param Request $request
+     * @param UserPasswordEncoderInterface $password
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function registreAction( Request $request, UserPasswordEncoderInterface $password)
+    public function register( Request $request, UserPasswordEncoderInterface $password)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
