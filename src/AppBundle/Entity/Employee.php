@@ -11,11 +11,11 @@ use Doctrine\ORM\Mapping\InheritanceType;
  * Employee
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="type", type="string")
- * @DiscriminatorMap({"user" = "User", "employee" = "Employee"})
+ * @DiscriminatorMap({"user" = "User", "personnel" = "Personnel"})
  * @ORM\Table(name="employee")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EmployeeRepository")
  */
-class Employee
+Abstract class Employee
 {
     /**
      * @var int

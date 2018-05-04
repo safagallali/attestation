@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Personnel;
 use AppBundle\Entity\User;
+use AppBundle\Form\PersonnelType;
 use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -41,7 +43,7 @@ class RegistreController extends Controller
         {
           $passwordEncrypted = $password->encodePassword($user,$password_generated[0]);
           $user->setPassword($passwordEncrypted);
-          $email = $user->getUsername();
+          $email = $user->getEmail();
 	        $message = (new \Swift_Message('Donées Confidentiel'))
 		        ->setFrom('attestation.isi@gmail.com')
 		        ->setTo($email)
@@ -68,14 +70,42 @@ class RegistreController extends Controller
 
     }
 
+	/**
+	 * @Route("/personnel", name="personnel")
+	 * @param Request $request *
+	 *
+	 * @return Response
+	 */
+    public function registerPersonnel( Request $request)
+    {
+       $em = $this->getDoctrine()->getManager();
+       $personnel = new Personnel();
+       $form = $this->createForm(PersonnelType::class, $personnel);
+       $form->handleRequest($request);
+       if ($form->isSubmitted() && $form->isValid())
+       {
+       	$em->persist($personnel);
+       	$em->flush();
+	       $this->get('session')->getFlashBag()->add(
+		       'notice',
+		       'le personnel est enregistré avec succés '
+	       );
+	       return $this->redirectToRoute('personnel');
+       }
+       return $this->render('default/add-personnel.html.twig', array(
+       	'personnel' => $personnel,
+        'form' => $form->createView()
+       ));
+    }
+
     /**
      * @Route("/list-users", name="users")
      *
      */
     public function listAction()
     {
-        $users = $this->getDoctrine()->getRepository("AppBundle:User")->findAll();
-        return $this->render("default/liste-users.html.twig",[
+        $users = $this->getDoctrine()->getRepository("AppBundle:Employee")->findAll();
+        return $this->render("default/list-users.html.twig",[
             'users' => $users,
         ]);
     }
