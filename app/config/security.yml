@@ -31,7 +31,7 @@ security:
                 path:  /logout
 
     access_control:
-        - { path: ^/register, roles: ROLE_ADMIN }
+        - { path: ^/lol, roles: ROLE_ADMIN }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
             # activate different ways to authenticate

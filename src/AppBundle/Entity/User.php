@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @UniqueEntity("username", message="the username is already exist")
 
  */
-class User implements UserInterface, \Serializable
+class User extends Employee implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -23,7 +23,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
 
 
@@ -40,10 +40,7 @@ class User implements UserInterface, \Serializable
      */
     private $password;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Grade",inversedBy="users")
-     */
-    private $grade;
+
 
     /**
      * @ORM\Column(type="json_array")
@@ -116,22 +113,22 @@ class User implements UserInterface, \Serializable
     }
 
 
-    /**
-     * Returns the roles granted to the user.
-     *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
+	/**
+	 * Returns the roles granted to the user.
+	 *
+	 * <code>
+	 * public function getRoles()
+	 * {
+	 *     return array('ROLE_USER');
+	 * }
+	 * </code>
+	 *
+	 * Alternatively, the roles might be stored on a ``roles`` property,
+	 * and populated in any number of different ways when the user object
+	 * is created.
+	 *
+	 * @return array (Role|string)[] The user roles
+	 */
     public function getRoles()
     {
         $roles = $this->roles;
@@ -194,27 +191,7 @@ class User implements UserInterface, \Serializable
             ) = unserialize($serialized);
     }
 
-    /**
-     * Set grade.
-     *
-     * @param \AppBundle\Entity\Grade|null $grade
-     *
-     * @return User
-     */
-    public function setGrade(\AppBundle\Entity\Grade $grade = null)
-    {
-        $this->grade = $grade;
 
-        return $this;
-    }
 
-    /**
-     * Get grade.
-     *
-     * @return \AppBundle\Entity\Grade|null
-     */
-    public function getGrade()
-    {
-        return $this->grade;
-    }
+
 }
