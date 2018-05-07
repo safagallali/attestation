@@ -64,9 +64,12 @@ class User extends Employee implements UserInterface, \Serializable
      */
       private $roles = ['ROLE_AGENT'];
 
-      public function __construct()
+	/**
+	 * User constructor.
+	 */
+	public function __construct()
       {
-
+        parent::__construct();
       }
 
     /**

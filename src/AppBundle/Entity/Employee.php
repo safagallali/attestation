@@ -11,11 +11,11 @@ use Doctrine\ORM\Mapping\InheritanceType;
  * Employee
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="type", type="string")
- * @DiscriminatorMap({"user" = "User", "personnel" = "Personnel"})
+ * @DiscriminatorMap({"user" = "User", "employee" = "Employee"})
  * @ORM\Table(name="employee")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EmployeeRepository")
  */
-Abstract class Employee
+ class Employee
 {
     /**
      * @var int
@@ -25,6 +25,24 @@ Abstract class Employee
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+	/**
+	 * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+	 */
+	private $user;
+
+	/**
+	 * @return mixed
+	 */
+	public function getUser() {
+		return $this->user;
+	}
+
+	/**
+	 * @param mixed $user
+	 */
+	public function setUser( User $user ) {
+		$this->user = $user;
+	}
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Grade")
@@ -70,7 +88,7 @@ Abstract class Employee
     /**
      * @var string
      *
-     * @ORM\Column(name="cin", type="string", length=255, unique=true)
+     * @ORM\Column(name="cin", type="integer", length=255, unique=true)
      */
     protected $cin;
 
@@ -91,9 +109,35 @@ Abstract class Employee
     /**
      * @var string
      *
-     * @ORM\Column(name="adresse", type="string", length=255)
+     * @ORM\Column(name="address", type="string", length=255)
      */
-    protected $adresse;
+    protected $address;
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="mission", type="string", length=255)
+	  */
+	 protected $mission;
+
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="numberOfChildren", type="integer", length=2)
+	  */
+     protected $numberOfChildren;
+
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="revenuImposable", type="float")
+	  */
+      protected $revenuImposable;
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="privilege", type="float")
+	  */
+	 protected $privilege;
 
     /**
      * @var int|null
@@ -102,24 +146,26 @@ Abstract class Employee
      */
     protected $workingDuration;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="income", type="integer", nullable=true)
-     */
-    protected $income;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="cost", type="integer", nullable=true)
-     */
-    protected $cost;
+    protected $totalRevenuBrut;
+
+	 /**
+	  * @var string
+	  *
+	  * @ORM\Column(name="dateCreation", type="datetime")
+	  */
+	 protected $dateCreation;
 
 
-    /**
+	 /**
+	  * Employee constructor.
+	  */
+	 public function __construct() {
+	 	$this->dateCreation = new \DateTime();
+	 }
+
+	 /**
      * Get id.
-     *
      * @return int
      */
     public function getId()
@@ -274,28 +320,28 @@ Abstract class Employee
         return $this->status;
     }
 
-    /**
-     * Set adresse.
-     *
-     * @param string $adresse
-     *
-     * @return Employee
-     */
-    public function setAdresse($adresse)
+	 /**
+	  * Set address.
+	  *
+	  * @param $address
+	  *
+	  * @return Employee
+	  */
+    public function setAddress($address)
     {
-        $this->adresse = $adresse;
+        $this->address = $address;
 
         return $this;
     }
 
     /**
-     * Get adresse.
+     * Get address.
      *
      * @return string
      */
-    public function getAdresse()
+    public function getAddress()
     {
-        return $this->adresse;
+        return $this->address;
     }
 
     /**
@@ -322,51 +368,83 @@ Abstract class Employee
         return $this->workingDuration;
     }
 
-    /**
-     * Set income.
-     *
-     * @param int|null $income
-     *
-     * @return Employee
-     */
-    public function setIncome($income = null)
-    {
-        $this->income = $income;
+	 /**
+	  * @return string
+	  */
+	 public function getMission() {
+		 return $this->mission;
+	 }
 
-        return $this;
-    }
+	 /**
+	  * @param string $mission
+	  */
+	 public function setMission( $mission ) {
+		 $this->mission = $mission;
+	 }
 
-    /**
-     * Get income.
-     *
-     * @return int|null
-     */
-    public function getIncome()
-    {
-        return $this->income;
-    }
+	 /**
+	  * @return string
+	  */
+	 public function getNumberOfChildren() {
+		 return $this->numberOfChildren;
+	 }
 
-    /**
-     * Set cost.
-     *
-     * @param int|null $cost
-     *
-     * @return Employee
-     */
-    public function setCost($cost = null)
-    {
-        $this->cost = $cost;
+	 /**
+	  * @param string $numberOfChildren
+	  */
+	 public function setNumberOfChildren( $numberOfChildren ) {
+		 $this->numberOfChildren = $numberOfChildren;
+	 }
 
-        return $this;
-    }
+	 /**
+	  * @return string
+	  */
+	 public function getRevenuImposable() {
+		 return $this->revenuImposable;
+	 }
 
-    /**
-     * Get cost.
-     *
-     * @return int|null
-     */
-    public function getCost()
-    {
-        return $this->cost;
-    }
+	 /**
+	  * @param string $revenuImposable
+	  */
+	 public function setRevenuImposable( $revenuImposable ) {
+		 $this->revenuImposable = $revenuImposable;
+	 }
+
+	 /**
+	  * @return string
+	  */
+	 public function getPrivilege() {
+		 return $this->privilege;
+	 }
+
+	 /**
+	  * @param string $privilege
+	  */
+	 public function setPrivilege( $privilege ) {
+		 $this->privilege = $privilege;
+	 }
+
+	 /**
+	  * @return int|null
+	  */
+	 public function getTotalRevenuBrut() {
+		 return $this->totalRevenuBrut;
+	 }
+
+	 /**
+	  * @param int|null $totalRevenuBrut
+	  */
+	 public function setTotalRevenuBrut( $totalRevenuBrut ) {
+		 $this->totalRevenuBrut = $totalRevenuBrut;
+	 }
+
+	 /**
+	  * @return string
+	  */
+	 public function getDateCreation() {
+		 return $this->dateCreation;
+	 }
+
+
+
 }

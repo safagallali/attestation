@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="personnel")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PersonnelRepository")
  */
-class Personnel extends Employee
+class Personnel
 {
     /**
      * @var int

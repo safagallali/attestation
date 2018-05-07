@@ -2,9 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Personnel;
+
 use AppBundle\Entity\User;
-use AppBundle\Form\PersonnelType;
+use AppBundle\Form\EmployeeType;
+use AppBundle\Entity\Employee;
 use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -78,13 +79,15 @@ class RegistreController extends Controller
 	 */
     public function registerPersonnel( Request $request)
     {
+    	$user = $this->get('security.token_storage')->getToken()->getUser();
        $em = $this->getDoctrine()->getManager();
-       $personnel = new Personnel();
-       $form = $this->createForm(PersonnelType::class, $personnel);
+       $employee = new Employee();
+       $form = $this->createForm(EmployeeType::class, $employee);
        $form->handleRequest($request);
        if ($form->isSubmitted() && $form->isValid())
        {
-       	$em->persist($personnel);
+       	$employee->setUser($user);
+       	$em->persist($employee);
        	$em->flush();
 	       $this->get('session')->getFlashBag()->add(
 		       'notice',
@@ -93,7 +96,7 @@ class RegistreController extends Controller
 	       return $this->redirectToRoute('personnel');
        }
        return $this->render('default/add-personnel.html.twig', array(
-       	'personnel' => $personnel,
+       	'personnel' => $employee,
         'form' => $form->createView()
        ));
     }

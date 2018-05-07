@@ -1,14 +1,36 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<table border="1">
-    <tr>
-        <th>Nom</th>
-        <th>role</th>
-    </tr>
-    {% for user in users %}
+
+<div class="row" style="margin: 80px 10px 10px 10px">
+    <a href="{{ path('personnel') }}" class="btn btn-success pull-right" style="margin-bottom: 5px" >Ajouter un employé</a>
+    <table class="table table-hover" >
         <tr>
-            <td>{{ u }}</td>
+            <th>#</th>
+            <th>Nom</th>
+            <th>Cin</th>
+            <th>Matricule</th>
+            <th>Adresse</th>
+            <th>Grade</th>
+            <th>Mission</th>
+            <th>Revenu</th>
+            <th>Action</th>
         </tr>
-    {% endfor %}
-</table>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.cin }}</td>
+                <td>{{ user.matricule }}</td>
+                <td>{{ user.address }}</td>
+                <td>{{ user.grade.libelleG }}</td>
+                <td>{{ user.mission }}</td>
+                <td>{{ user.revenuImposable }}</td>
+                <td>
+                    <a href="{{ path('employee_edit', {'id' : user.id}) }}" class="text-success"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    <a href="{{ path('employee_show', {'id':user.id}) }}" class="text-warning"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}
