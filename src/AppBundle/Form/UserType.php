@@ -61,6 +61,11 @@ class UserType extends AbstractType
                 'choice_label' => 'libelleG',
                 'placeholder' => 'Choisissez un grade'
             ])
+            ->add('services', EntityType::class, array(
+                'class' => 'AppBundle\Entity\Services',
+                'choice_label' => 'libelle',
+                'placeholder' => 'choisissez un service'
+            ))
         ;
     }
 

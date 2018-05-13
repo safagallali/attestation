@@ -25,6 +25,28 @@ use Doctrine\ORM\Mapping\InheritanceType;
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+     /**
+      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Services", cascade={"ALL"})
+      */
+    private $services;
+
+     /**
+      * @return mixed
+      */
+     public function getServices()
+     {
+         return $this->services;
+     }
+
+     /**
+      * @param mixed $services
+      */
+     public function setServices($services)
+     {
+         $this->services = $services;
+     }
+
 	/**
 	 * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
 	 */

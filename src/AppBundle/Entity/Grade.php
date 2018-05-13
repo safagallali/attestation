@@ -22,6 +22,11 @@ class Grade
     private $id;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Salary", cascade={"ALL"})
+     */
+    private $salary;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="code_G", type="integer")
@@ -94,6 +99,22 @@ class Grade
     public function getLibelleG()
     {
         return $this->libelleG;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSalary()
+    {
+        return $this->salary;
+    }
+
+    /**
+     * @param mixed $salary
+     */
+    public function setSalary( Salary $salary)
+    {
+        $this->salary = $salary;
     }
 
 
